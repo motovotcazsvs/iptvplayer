@@ -1,6 +1,5 @@
 <RCC>
     <qresource>
         <file>main.qml</file>
-        <file>vipdrive_playlist.m3u8</file>
     </qresource>
 </RCC>

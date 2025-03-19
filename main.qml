@@ -8,53 +8,50 @@ ApplicationWindow {
     height: 480
     title: "IPTV Player"
 
-    // Медійний плеєр для відтворення плейлиста
     MediaPlayer {
         id: mediaPlayer
         autoPlay: true
         loops: MediaPlayer.Infinite
-	//source: "http://jxbkvhho.otttv.pw/iptv/A4YKA85FN8C7W4/9314/index.m3u8"
-        source: playlistUrl
+        source: playlist_manager.currentStream
+
         onError: console.log("Error:", errorString)
-        
-        
     }
 
-    // Виведення відео на екран
     VideoOutput {
         id: videoOutput
         anchors.fill: parent
         source: mediaPlayer
     }
 
-    Row {
-        anchors.bottom: parent.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
+    footer: Rectangle {
+        height: 50
+        color: "#333"
+        width: parent.width
 
-        Button {
-            text: "Play"
-            onClicked: mediaPlayer.play()
-        }
+        Row {
+            anchors.centerIn: parent
+            spacing: 10
 
-        Button {
-            text: "Pause"
-            onClicked: mediaPlayer.pause()
-        }
-
-        Button {
-            text: "Next"
-            onClicked: {
-                // Тут можна додати логіку для наступного елементу
+            Button {
+                text: "Previous"
+                onClicked: playlist_manager.previousStream()
             }
-        }
 
-        Button {
-            text: "Previous"
-            onClicked: {
-                // Тут можна додати логіку для попереднього елементу
+            Button {
+                text: "Play"
+                onClicked: mediaPlayer.play()
+            }
+
+            Button {
+                text: "Pause"
+                onClicked: mediaPlayer.pause()
+            }
+
+            Button {
+                text: "Next"
+                onClicked: playlist_manager.nextStream()
             }
         }
     }
 }
-
 

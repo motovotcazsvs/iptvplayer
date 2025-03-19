@@ -1,41 +1,16 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-
-//#include <QCoreApplication>
-//#include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QFile>
-#include <QTextStream>
+#include "CPlaylistManager.h"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
+    CPlaylistManager playlist_manager;
+    playlist_manager.loadPlaylist("/home/dell/PROGRAMMING/iptvplayer/vipdrive_playlist.m3u8");
 
-
-	QString playlistFile = "/home/dell/PROGRAMMING/iptvplayer/vipdrive_playlist.m3u8";
-    QFile file(playlistFile);
-    
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QTextStream in(&file);
-        QString playlistContent = in.readAll();
-        file.close();
-
-        // Шукаємо першу HTTP-адресу
-        QRegExp regex("http://[^\n]+");
-        int pos = regex.indexIn(playlistContent);
-        QString httpUrl;
-        if (pos > -1) {
-            httpUrl = regex.cap(0); // Перша HTTP-адреса
-        }
-
-        // Передаємо URL в QML
-        engine.rootContext()->setContextProperty("playlistUrl", httpUrl);
-    }
-
-
-    // Завантаження QML файлу
+    engine.rootContext()->setContextProperty("playlist_manager", &playlist_manager);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     if (engine.rootObjects().isEmpty())
